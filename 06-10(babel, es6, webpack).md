@@ -1,4 +1,4 @@
-### ES6
+# ES6
 * ECMAScript2015, ECMAScript6이라고도 불리며 2015년에 도입된 최신 버전의 JavaScript 이다.
 * ECMAScript는 JavaScript 언어가 사용하는 표준으로써, JavaScript 언어가 작동하는 방식에 대한 사양을 제공한다.
 * TypeScript의 기반이 되는 클래스 문법과 모듈 기능이 추가 되었다.
@@ -14,7 +14,7 @@ ECMAScript에 포함되는 항목에는 다음과 같은 예가 있습니다.
 * 내장 객체 및 함수 (JSON, Math, Array.prototype 메서드, Object 내성검사 메서드 등)
 * 엄격 모드
 ```
-### Babel
+# Babel
 * Babel은 JavaScript 컴파일러 이다.
 * JavaScript는 컴파일러가 아닌 인터프리터로 동작을 하지만, ES5+ 코드를 브라우저에서 이용가능하도록 하위 버전으로 변환해주는 컴파일러 역할을 한다.
 #### Babel이 하는 일
@@ -26,7 +26,7 @@ ECMAScript에 포함되는 항목에는 다음과 같은 예가 있습니다.
   * babel은 컴파일 때 실행되고, polyfill은 런타임에 실행된다.
 3. JSX and React
   * babel은 JSX 문법을 변환한다.
-#### Babel의 동작 과정
+ #### Babel의 동작 과정
 1. Parsing
   * babel은 소스코드를 분석하여 AST로 변환한다.
 2. Transformation
@@ -39,7 +39,7 @@ ECMAScript에 포함되는 항목에는 다음과 같은 예가 있습니다.
 ##### JSX 문법을 변환해야 하는 이유
 * JSX는 JavaScript 코드이지만 브라우저에서 단독으로 실행될 수 없다.
 * JSX를 바로 실행하면 브라우저는 이해하지 못하기에 JavsScript(js) 코드로 트랜스 파일링을 해주어야 한다. 
-### WebPack
+# WebPack
 * Webpack이란 한마디로 번들링과 컴파일을 결합하는 '정적 모듈 번들러'이다.
 * 여러개로 나눠진 자바스크립트 파일을 html이 실행할 수 있는 하나의 js 파일로 합쳐준다.
 #### Webpack의 사용 이유
