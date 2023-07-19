@@ -1,0 +1,30 @@
+# Typescript에서 js 라이브러리를 이용하기
+#### TypeScript에서 js 라이브러리 추가하는 방법은 2가지가 존재
+1. @types를 붙여서 npm install
+```
+npm install @types/jslibrary
+```
+2. 우회해서 import 하기
+```
+import js from 'jslibrary' 가아닌
+import * from 'jslibrary'로 import
+```
+#### @types가 없는 경우(포팅이 되어 있지 않은)의 라이브러리 사용 법
+* tsconfig.json 파일 수정
+```
+{
+  "compilerOptions": {
+    ...
+    "typeRoots": ["./types", "./node_modules/@types"], // 보통 types 폴더를 만들어 타입 정의
+    "declaration": true, // lib 만들 때 .d.ts 파일을 자동으로
+    "declarationDir": "./types" // 이 폴더에 만들어주는 옵션
+  },
+  "typeRoots": ["./types", "./node_modules/@types"],
+  "include": ["src"]
+}
+```
+2. root에 type라는 폴더 생성
+3. type이 없던 해당 라이브러리 이름으로 폴더 하나 생성
+4. 폴더 아래 index.d.ts 파일 생성
+5-1. 내가 이용하고자 하는 타입으로 타입을 정의해 준다.
+5-2. declare module 'jslibrary'
