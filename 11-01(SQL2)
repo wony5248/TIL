@@ -1,0 +1,74 @@
+# SQL 데이터 형식
+* 정수형
+  * TINYINT - 1BYTE
+  * SMALLINT - 2BYTE
+  * INT - 4BYTE
+  * BIGINT - 8BYTE
+  * 정수형은 소수점이 없는 숫자에 이용
+  * UNSIGNED를 붙여줄 시 양의 정수 범위로 지정
+* 실수형
+  * FLOAT - 4BYTE
+    * 소수점 아래 7자리까지 표현
+  * DOUBLE - 8BYTE
+    * 소수점 아래 15자리까지 표현
+  * 실수형은 소수점 있는 숫자 저장시 이용
+  * 대부분 FLOAT 이용
+* 문자형
+  * CHAR - 1~255BYTE
+    * 고정길이 문자형
+  * VARCHAR() - 1~16383BYTE
+    * 가변길이 문자형
+  * 실수형은 소수점 있는 숫자 저장시 이용
+  * 문자형은 글자를 저장하기 위해 사용합니다.
+  * 테이블 생성시 입력할 최대 글자의 개수를 지정해야합니다.
+  * CHAR 은 고정길이 문자형입니다.
+    * 데이터 형식을 CHAR(10)로 지정하면 해당 컬럼은 저장되는 데이터의 크기와 상관없이 무조건 10 바이트를 차지합니다.
+  * CHAR(10) 에 'abc' 저장 → 10바이트 차지
+  * VARCHAR은 가변길이 문자형입니다.
+    * 데이터 형식을 VARCHAR(10)로 지정하면 해당 컬럼은 저장되는 데이터의 크기에 따라 할당되는 바이트 수가 정해집니다. 
+  * VARCHAR(10) 에 'abc' 저장 → 3바이트 차지
+* 대량 데이터 형식
+  * TEXT 형
+    * TEXT - 1~65535BYTE
+    * LONGTEXT - 1~4294967295BYTE
+  * BLOB 형
+    * BLOB - 1~65535BYTE
+    * LONGBLOB - 1~4294967295BYTE
+  * CHAR이나 VARCHAR로는 각각 최대 255자, 16383자까지만 지정이 가능합니다. 따라서, 더 큰 데이터를 저장하기 위해 TEXT나 BLOB 형식을 사용합니다.
+  * TEXT은 최대 65535자까지,  LONGTEXT는 최대 42억자까지 저장이 가능합니다. 영화 대본이나 소설과 같은 대량의 텍스트를 저장할 때 지정합니다.
+  * BLOB은 Binary Long Objecct의 약자로, 글자가 아닌 이미지나 동영상 등의 데이터를 저장한다고 생각하면 됩니다. 마찬가지로 대량의 데이터를 저장하고 싶다면 LONGBLOB을 사용합니다.
+* 날짜형
+  * DATE - 3BYTE
+    * 날짜만 저장 YYYY-MM-DD 형식으로 사용
+  * TIME - 3BYTE
+    * 시간만 저장 HH:MM:SS 형식으로 사용
+  * DATETIME - 8BYTE
+    * 날짜와 시간을 저장 YYYY-MM-DD HH:MM:SS 형식으로 이용
+* 날짜형은 날짜 및 시간을 저장할 때 사용합니다.
+* DATE는 날짜만, TIME은 시간만, DATETIME은 시간과 날짜를 모두 저장할 때 사용합니다.
+* 날짜 또는 시간을 입력할 때는 문자와 마찬가지로 작은 따옴표로 묶어주어야합니다.
+* 데이터 형변환
+```
+-- 실수 → 정수 변경
+SELECT CONVERT(AVG(price), SIGNED) '평균 가격' FROM buy;
+SELECT CAST(AVG(price) AS SIGNED) '평균 가격' FROM buy;
+
+-- 날짜형 변경 (다양한 구분자를 날짜형으로 변경 가능)
+SELECT CAST('2022&02&12' AS DATE); -- 2022-02-12
+SELECT CAST('2022/02/12' AS DATE); -- 2022-02-12
+
+-- SQL 결과를 원하는 형태로도 표현 가능
+SELECT num, CONCAT(CAST(price AS CHAR), 'X' CAST(amount AS CHAR), '=') AS '가격X수량'
+	FROM buy;
+```
+* 암시적인 반환
+```
+SELECT '100' + '200';  -- 300
+SELECT 100 + '200';  -- 300
+
+SELECT CONCAT(100, '200');  -- 100200 / 자동 문자형 형변환
+```
+
+  
+  
+    
