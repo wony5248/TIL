@@ -1,0 +1,98 @@
+## React 성능 개선 - 2
+### 이벤트의 실행 빈도 제어 throttle vs debounce
+#### throttle
+* throttle은 입력 주기를 방해하지 않고 일정 시간동안의 입력을 모아서 한번씩 출력을 제한한다.
+* 여러번 발생하는 이벤트를 일정 시간동안, 한번만 실행되도록 만드는 개념
+* 주로 scroll 이벤트 처리나 infinity scroll 구현에 이용된다.
+#### debounce
+* 여러번 발생하는 이벤트에서, 가장 마지막 이벤트만을 실행되도록 만드는 개념
+* 일정 시간 동안 이벤트가 더 이상 발생하지 않으면 이벤트 핸들러가 한번만 호출된다.
+* resize 이벤트나, input요소를 이용하여 ajac 요청하는 입력 등에서 이용된다.
+#### 사용 예제
+```
+const debounce = (callback, delay) =>{
+  let timeId;
+  return event => {
+    if(timeId) clearTimeout(timerId)
+    timerId = setTimeout(callback, delay, event);
+  };
+};
+
+const throttle = (callback, delay) =>{
+  let timeId;
+  return event => {
+    if(timeId) return;
+    timerId = setTimeout(()=>{
+      callback(event);
+      timeId = null;
+    }, delay, event);
+  };
+};
+
+button.addEventListener('click', debounce(() =>{...},500)
+button.addEventListener('click', throttle(() =>{...},500)
+일반 클릭이 20번인 경우 debounce는 1회, throttle은 6회 호출 정도의 호출 빈도의 차이를 알 수 있다.
+```
+#### throttle과 debounce의 차이점
+* throttle은 적어도 일정 주기마다 정기적으로 기능 실행을 보장해 주는 반면 debounce는 아무리 많은 이벤트가 발생하더라도 이벤트가 발생하지 않았을 때 딱 한번만 마지막 이벤트를 발행 시킨다.
+* 5ms로 설정되었을 경우 5ms마다 throttle은 실행하는 반면 5ms 안에 이벤트가 들어올시 debounce는 콜백에 반응하는 이벤트는 발생 시키지 않고 무시된다.
+* 사용자 측면에서는 throttle이 유리할 수 있는 반면, 성능상에서는 debounce가 유리할 수 있다.
+
+### 호출 스케줄링 기법 setTimeout vs setInterval
+#### setTimeout
+* 일정 시간이 지난 후에 함수를 실행시키는 방법
+#### 사용 예제
+```
+function sayHi() {
+  alert('안녕하세요.');
+}
+
+setTimeout(sayHi, 1000);
+1000ms 이후에 sayHi 함수를 실행시킨다.
+```
+#### clearTimeout
+* setTimeout을 호출하면 타이머 식별자가 반환된다. 해당 타이머 식별자를 인자로 넘겨받아 스케줄링을 취소할 때 이용하는 메서드
+#### 사용 예제
+```
+let timerId = setTimeout(...);
+clearTimeout(timerId);
+```
+#### setInterval
+* 일정 주기를 두고 함수를 반복적으로 실행시키는 방법
+#### 사용 예제
+```
+function sayHi() {
+  alert('안녕하세요.');
+}
+let timerId = setInterval(() => sayHi, 2000);
+2000ms 간격으로 
+```
+#### clearInterval
+* clearTimeout과 마찬가지로 setInterval로 호출되는 스케줄링을 중단할 때 이용하는 메서드
+#### 사용 예제
+```
+let timerId = setInterval(...);
+clearInterval(timerId);
+```
+#### 중첩 setTimeout
+* setInterval과 마찬가지로 setTimeout을 이용해 주기적으로 함수를 실행시킬 수 있는 기법
+* 호출 결과에 따라 다음 호출을 원하는 방식으로 조정해 스케줄링 할 수 있기에 setInterval보다 유연하게 이용 가능하다.
+* CPU소모가 많은 작업을 주기적으로 실행하는 경우에도 작업에 걸리는 시간에 따라 다음 작업을 유동적으로 계획할 수 있기에 setInterval보다 유용하다.
+* 중첩 setTimeout은 지연 간격을 보장하지만 setInterval은 이를 보장해주지 않는다.
+#### 사용 예제
+```
+let timerId = setTimeout(function tick() {
+  alert('째깍');
+  timerId = setTimeout(tick, 2000); // (*)
+}, 2000);
+```
+#### 대기 시간이 0인 setTimeout
+* 대기시간을 0으로 설정하여 setTimeout 을 이용하면 실행시킬 함수를 가능한 한 빨리 실행할 수 있다.
+* 현재 실행 중인 스크립트가 종료된 이후 스케줄링된 함수가 실행된다.
+#### 사용 예제
+```
+setTimeout(() => alert("World"));
+
+alert("Hello");
+현재 스크립트인 alert("Hello")의 실행이 종료되고 나서 직후에 스케줄링된 alert("World")가 출력된다.
+```
